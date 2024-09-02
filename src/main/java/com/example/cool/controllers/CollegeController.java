@@ -14,41 +14,32 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class CollegeController {
     private CollegeService collegeService;
-    private TeacherService teacherService;
+
 
     @Autowired
-    public CollegeController(CollegeService collegeService, TeacherService teacherService) {
+    public CollegeController(CollegeService collegeService) {
         this.collegeService = collegeService;
-        this.teacherService = teacherService;
+
     }
 
     @GetMapping(value = "createCollege")
     public String create(@RequestBody CollegeDto collegeDto) {
-        College college = this.collegeService.findByname(collegeDto.getName());
-        Teacher teacher = this.teacherService.findByname(collegeDto.getManager().getName());
-        if (college.getTeachers().contains(teacher)) {
-            this.collegeService.save(collegeDto.convertDtotoEntity(collegeDto));
-            return "saved";
-        }
-        return "not save";
+        return this.collegeService.create(collegeDto);
     }
+
     @GetMapping(value = "readCollege")
-    public CollegeDto read(@RequestParam String name){
-        College college = this.collegeService.findByname(name);
-        return college.convertEntitytoDto(college);
+    public CollegeDto read(@RequestParam String name) {
+        return this.collegeService.read(name);
     }
+
     @GetMapping(value = "updateCollege")
-    public String update(@RequestParam String name, @RequestBody CollegeDto collegeDto){
-        College college = this.collegeService.findByname(name);
-        this.collegeService.delete(college);
-        this.collegeService.save(collegeDto.convertDtotoEntity(collegeDto));
-        return "updated";
+    public String update(@RequestParam String name, @RequestBody CollegeDto collegeDto) {
+        return collegeService.update(name, collegeDto);
     }
+
     @GetMapping(value = "deleteCollege")
-    public String delete(@RequestParam String name){
-        College college = this.collegeService.findByname(name);
-        this.collegeService.delete(college);
-        return "deleted";
+    public String delete(@RequestParam String name) {
+        return this.collegeService.delete(name);
     }
 
 }
