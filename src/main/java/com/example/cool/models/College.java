@@ -1,5 +1,6 @@
 package com.example.cool.models;
 
+import com.example.cool.dtos.CollegeDto;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -25,6 +26,14 @@ public class College {
     private List<Teacher> teachers;
     @OneToMany(mappedBy = "college")
     private List<Lesson> lessons;
-
+public CollegeDto convertEntitytoDto(College college){
+    CollegeDto collegeDto = new CollegeDto();
+    collegeDto.setLessons(college.getLessons());
+    collegeDto.setName(college.getName());
+    collegeDto.setManager(college.getManager());
+    collegeDto.setTeachers(college.getTeachers());
+    collegeDto.setStudents(college.getStudents());
+    return collegeDto;
+}
 
 }
